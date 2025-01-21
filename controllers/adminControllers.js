@@ -94,6 +94,20 @@ export const adminProfile = async (req, res, next) => {
     }
 };
 
+export const adminProfileUpdate = async (req, res, next) => {
+    try {
+        const adminId = req.user.id;
+        const updatedData = req.body;
+        const updatedAdmin = await Admin.findByIdAndUpdate(adminId, {$set: updatedData}).select("-password");
+        if(!updatedAdmin){
+            return res.status(404).json({ message: "user not found" });
+        }
+        return res.json({ data: updatedAdmin, message: "user profile updated successfully" });
+    } catch (error) {
+        return res.status(error.status || 500).json({message:error.message || "Internal Server Error"})
+    }
+};
+
 export const adminLogout = async (req, res, next) => {
     try {
         res.clearCookie("token");

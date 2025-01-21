@@ -1,5 +1,5 @@
 import express from "express";
-import { userLogin, userLogout, userProfile, userSignup } from "../controllers/userControllers.js";
+import { userLogin, userLogout, userProfile, userProfileUpdate, userSignup } from "../controllers/userControllers.js";
 import { userAuth } from "../middlewares/userAuth.js";
 
 const router = express.Router()
@@ -8,16 +8,19 @@ const router = express.Router()
 router.post('/signup' ,userSignup)
 
 //login
-router.get('/login', userLogin)
+router.get('/login', userAuth, userLogin)
 
 //profile 
 router.get('/profile',userAuth, userProfile)
+
+//profile-update
+router.put('/profile-update/:id',userAuth, userProfileUpdate)
+
 //logout
 router.get('/logout',userAuth, userLogout)
 
 //forgot-password
 //change-password
-//profile-update
 //account-deactivate
 
 export {router as userRouter}
