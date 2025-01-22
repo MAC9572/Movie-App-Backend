@@ -8,13 +8,13 @@ const router = express.Router()
 router.post('/signup' , adminSignup)
 
 //login
-router.get('/login', adminAuth, adminLogin)
+router.get('/login', adminLogin)
 
 //profile
 router.get('/profile' ,adminAuth, adminProfile)
 
 //profile-update
-router.put('/profile-update/:id' ,adminAuth, adminProfileUpdate)
+router.put('/profile-update' ,adminAuth, adminProfileUpdate)
 
 //logout
 router.get('/logout' ,adminAuth, adminLogout)
