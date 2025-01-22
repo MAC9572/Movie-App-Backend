@@ -11,10 +11,10 @@ router.post('/signup' ,userSignup)
 router.get('/login', userAuth, userLogin)
 
 //profile 
-router.get('/profile',userAuth, userProfile)
+router.get('/profile', userProfile)
 
 //profile-update
-router.put('/profile-update/:id',userAuth, userProfileUpdate)
+router.put('/profile-update',userAuth, userProfileUpdate)
 
 //logout
 router.get('/logout',userAuth, userLogout)
