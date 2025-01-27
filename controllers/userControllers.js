@@ -88,6 +88,9 @@ export const userProfile = async (req, res, next) => {
     try {
         const userId = req.user.id;
         const userData = await User.findById(userId).select("-password");
+        if (!userData) {
+            return res.status(404).json({ message: "User not found" });
+        }
         return res.json({ data: userData, message: "user profile fetched" });
     } catch (error) {
         return res.status(error.status || 400 || 500).json({message:error.message || "Invalid Input" || "Internal Server Error"})
