@@ -8,10 +8,10 @@ const router = express.Router()
 router.post('/signup' ,userSignup)
 
 //login
-router.get('/login', userAuth, userLogin)
+router.get('/login', userLogin)
 
 //profile 
-router.get('/profile', userProfile)
+router.get('/profile', userAuth, userProfile)
 
 //profile-update
 router.put('/profile-update',userAuth, userProfileUpdate)

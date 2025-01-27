@@ -15,7 +15,8 @@ const userSchema = new Schema({
  contactNumber : {
     type :String,
     required:true,
-    minLength :10
+    minLength :10,
+    maxLength :10
  },
  location : String,
  
