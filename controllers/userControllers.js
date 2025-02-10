@@ -2,6 +2,8 @@ import { User } from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import { generateToken } from "../utils/token.js";
 
+const NODE_ENV =process.env.NODE_ENV;
+
 export const userSignup = async (req, res, next) => {
     try {
         const { name, emailId, password, contactNumber, location } = req.body;
@@ -33,7 +35,12 @@ export const userSignup = async (req, res, next) => {
         await userData.save();
 
         const token = generateToken(userData._id);
-        res.cookie("token", token);
+        // res.cookie("token", token);
+        res.cookie("token", token, {
+            sameSite: NODE_ENV === "production" ? "None" : "Lax",
+            secure: NODE_ENV === "production",
+            httpOnly: NODE_ENV === "production",
+        });
 
         // Return the response without the password field
         const { password: _, ...userWithoutPassword } = userData.toObject();
@@ -66,7 +73,12 @@ export const userLogin = async (req, res, next) => {
         }
 
         const token = generateToken(userExist._id);
-        res.cookie("token", token);
+        // res.cookie("token", token);
+        res.cookie("token", token, {
+            sameSite: NODE_ENV === "production" ? "None" : "Lax",
+            secure: NODE_ENV === "production",
+            httpOnly: NODE_ENV === "production",
+        });
 
         // Return the response without the password field
         const { password: _, ...userWithoutPassword } = userExist.toObject();
@@ -113,7 +125,11 @@ export const userProfileUpdate = async (req, res, next) => {
 
 export const userLogout = async (req, res, next) => {
     try {
-        res.clearCookie("token");
+        res.clearCookie("token", {
+            sameSite: NODE_ENV === "production" ? "None" : "Lax",
+            secure: NODE_ENV === "production",
+            httpOnly: NODE_ENV === "production",
+        });
 
         return res.json({ message: "user logout success" });
     } catch (error) {
