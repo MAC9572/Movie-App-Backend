@@ -8,7 +8,7 @@ const router = express.Router()
 
 //display Movies
 router.get('/show-movies', showMovies)
-router.get('/show-movieDetails', getMovieDetails)
+router.get('/show-movieDetails/:movieId', getMovieDetails)
 router.post('/add-movies', adminAuth, upload.single("movie_image") , addMovies)
 router.put('/update/:id' , adminAuth, upload.single("movie_image"), updateMovie)
 router.delete('/delete/:id' , adminAuth, deleteMovie)

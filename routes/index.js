@@ -5,6 +5,7 @@ import { movieRouter } from "./movieRoute.js";
 import { screenRouter } from "./screenRoute.js";
 import { bookingRouter } from "./bookingRoute.js";
 import { cartRouter } from "./cartRoute.js";
+import { ratingRouter } from "./ratingRoute.js";
 
 const router = express.Router()
 
@@ -14,6 +15,7 @@ router.use('/movies', movieRouter)
 router.use('/screen', screenRouter)
 router.use('/bookings', bookingRouter)
 router.use('/cart', cartRouter)
+router.use('/ratings',ratingRouter)
 
 
 

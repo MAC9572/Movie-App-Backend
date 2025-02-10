@@ -118,3 +118,11 @@ export const adminLogout = async (req, res, next) => {
 
     }
 };
+export const checkAdmin = async (req, res, next) => {
+    try {
+        res.json({ success: true, message: "admin authorised" });
+    } catch (error) {
+        console.log(error);
+        res.status(error.statusCode || 500).json(error.message || "Internal server error");
+    }
+};
