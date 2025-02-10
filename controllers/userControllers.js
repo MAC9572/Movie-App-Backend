@@ -53,8 +53,7 @@ export const userLogin = async (req, res, next) => {
         if (!emailId || !password) {
             return res.status(400).json({ message: "All fields are required" });
         }
-
-        const userExist = await User.findOne({ emailId });
+        const userExist = await User.findOne({emailId});
 
         if (!userExist) {
             return res.status(404).json({ message: "User does not exist" });
@@ -120,5 +119,13 @@ export const userLogout = async (req, res, next) => {
     } catch (error) {
         return res.status(error.status || 400 || 500).json({message:error.message || "Invalid Input" || "Internal Server Error"})
 
+    }
+};
+
+export const checkUser = async (req, res, next) => {
+    try {
+        return res.json({ message: "user authorised" });
+    } catch (error) {
+        return res.status(error.statusCode || 500).json({ message: error.message || "Internal server error" });
     }
 };

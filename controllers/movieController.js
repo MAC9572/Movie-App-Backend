@@ -17,7 +17,8 @@ export const showMovies = async (req, res, next)=>{
 export const getMovieDetails = async (req, res, next)=>{
 
     try{
-       const movieList = await Movie.find()
+        const {movieId} = req.params
+       const movieList = await Movie.findById(movieId)
        res.json({data : movieList, message : "Movies fetched"})
     }
     catch(error){
@@ -30,7 +31,7 @@ export const getMovieDetails = async (req, res, next)=>{
 export const addMovies = async (req, res, next)=>{
 
     try{
-         const {title, description, movie_grade, languages, duration, genre, cast, crew, theatre_admin } = req.body
+         const {title, description, movie_grade, languages, duration, genre, cast, crew,  theatre_admin } = req.body
          if(!title || !description|| !movie_grade|| !languages|| !duration|| !genre|| !cast|| !crew){
            res.status(400).json({message: "All fields are required"})
          }
@@ -58,7 +59,14 @@ export const updateMovie = async (req, res, next) => {
     const {id} = req.params;
     const updatedData = req.body;
     try {
-        const updatedMovie = await Movie.findByIdAndUpdate(id, updatedData,{new : true});
+        let imageUrl = updatedData.image;
+        if(req.file){
+        const cloudinaryRes = await cloudinaryInstance.uploader.upload(req.file.path)
+        console.log("cldRes====", cloudinaryRes);
+        imageUrl = cloudinaryRes.secure_url
+        }
+
+        const updatedMovie = await Movie.findByIdAndUpdate(id, {updatedData, movie_image: imageUrl}, {new : true});
         if(!updatedMovie){
             return res.status(404).json({ message: "Movie not found" });
         }

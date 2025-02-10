@@ -32,10 +32,10 @@ const movieSchema = new mongoose.Schema(
          type : String,
          required : true
         },
-        rating : {
-            percentage: { type: Number },
-            no_of_ratings: { type: Number}
-        },
+        // rating : {
+        //     percentage: { type: mongoose.Schema.Types.ObjectId , ref :"Movie" },
+        //     no_of_ratings: {type: mongoose.Schema.Types.ObjectId , ref :"Movie"}
+        // },
         cast: [
             {
               original_name: { type: String, required: true },
