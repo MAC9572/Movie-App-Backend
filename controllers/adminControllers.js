@@ -2,6 +2,8 @@ import bcrypt from "bcrypt";
 import { generateToken } from "../utils/token.js";
 import { Admin } from "../models/adminModel.js";
 
+const NODE_ENV =process.env.NODE_ENV;
+
 export const adminSignup = async (req, res, next) => {
     try {
         const { name, emailId, password, contactNumber, } = req.body;
@@ -32,7 +34,14 @@ export const adminSignup = async (req, res, next) => {
         await adminData.save();
 
         const token = generateToken(adminData._id);
-        res.cookie("token", token);
+        //res.cookie("token", token);
+        res.cookie("token", token, {
+            sameSite: NODE_ENV === "production" ? "None" : "Lax",
+            secure: NODE_ENV === "production",
+            httpOnly: NODE_ENV === "production",
+        });
+      
+
 
         // Return the response without the password field
         const { password: _, ...adminWithoutPassword } = adminData.toObject();
@@ -66,7 +75,12 @@ export const adminLogin = async (req, res, next) => {
         }
 
         const token = generateToken(adminExist._id, "theatre_admin");
-        res.cookie("token", token);
+        // res.cookie("token", token);
+        res.cookie("token", token, {
+            sameSite: NODE_ENV === "production" ? "None" : "Lax",
+            secure: NODE_ENV === "production",
+            httpOnly: NODE_ENV === "production",
+        });
 
         // Return the response without the password field
         const { password: _, ...adminWithoutPassword } = adminExist.toObject();
@@ -110,7 +124,11 @@ export const adminProfileUpdate = async (req, res, next) => {
 
 export const adminLogout = async (req, res, next) => {
     try {
-        res.clearCookie("token");
+        res.clearCookie("token", {
+            sameSite: NODE_ENV === "production" ? "None" : "Lax",
+            secure: NODE_ENV === "production",
+            httpOnly: NODE_ENV === "production",
+        });
 
         return res.json({ message: "admin logout success" });
     } catch (error) {
