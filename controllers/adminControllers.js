@@ -125,6 +125,7 @@ export const adminProfileUpdate = async (req, res, next) => {
 export const adminLogout = async (req, res, next) => {
     try {
         res.clearCookie("token", {
+            maxAge: -1,
             sameSite: NODE_ENV === "production" ? "None" : "Lax",
             secure: NODE_ENV === "production",
             httpOnly: NODE_ENV === "production",
