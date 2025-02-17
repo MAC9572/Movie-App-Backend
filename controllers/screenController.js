@@ -36,6 +36,18 @@ export const getAllScreens = async (req, res) => {
     }
 };
 
+
+export const getScreenById = async (req, res) => {
+    try {
+        const{screenId} =req.params
+        const screens = await Screen.findById(screenId)
+        res.status(200).json({ data: screens });
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+};
+
+
 export const updateScreen = async (req, res, next) => {
     const {id} = req.params;
     const updatedData = req.body;

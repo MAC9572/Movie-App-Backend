@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { generateToken } from "../utils/token.js";
 import { Admin } from "../models/adminModel.js";
+import { User } from "../models/userModel.js";
 
 const NODE_ENV =process.env.NODE_ENV;
 
@@ -144,3 +145,4 @@ export const checkAdmin = async (req, res, next) => {
         res.status(error.statusCode || 500).json(error.message || "Internal server error");
     }
 };
+
