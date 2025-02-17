@@ -125,7 +125,7 @@ export const userProfileUpdate = async (req, res, next) => {
 
 export const userLogout = async (req, res, next) => {
     try {
-        res.clearCookie("token", {
+        res.clearCookie("token", token, {
             sameSite: NODE_ENV === "production" ? "None" : "Lax",
             secure: NODE_ENV === "production",
             httpOnly: NODE_ENV === "production",
