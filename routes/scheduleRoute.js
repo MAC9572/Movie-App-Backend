@@ -4,7 +4,7 @@ import { addSchedule, getSchedule, getScheduleAll } from "../controllers/schedul
 
 const router = e.Router();
 
-router.post("/add-schedule/", adminAuth, addSchedule);
+router.post("/add-schedule", adminAuth, addSchedule);
 router.get("/get-schedule/:screenId", getSchedule);
 router.get("/get-scheduleAll", getScheduleAll);
 
