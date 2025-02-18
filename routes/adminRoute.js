@@ -1,5 +1,5 @@
 import express from "express";
-import { adminLogin, adminLogout, adminProfile, adminProfileUpdate, adminSignup, checkAdmin } from "../controllers/adminControllers.js";
+import { adminLogin, adminLogout, adminProfile, adminProfileUpdate, adminSignup, checkAdmin, getAllUsers } from "../controllers/adminControllers.js";
 import { adminAuth } from "../middlewares/adminAuth.js";
 
 const router = express.Router()
@@ -20,6 +20,8 @@ router.put('/profile-update' ,adminAuth, adminProfileUpdate)
 router.get('/logout' ,adminAuth, adminLogout)
 //check-admin
 router.get("/check-admin", adminAuth, checkAdmin);
+
+router.get("/get-all-users", adminAuth, getAllUsers)
 
 //forgot-password
 //change-password

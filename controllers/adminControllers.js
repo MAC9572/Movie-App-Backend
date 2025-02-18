@@ -146,3 +146,14 @@ export const checkAdmin = async (req, res, next) => {
     }
 };
 
+export const getAllUsers =async(req,res,next)=>{
+ try{
+    const users =await User.find().select("-password");
+    if(!users){
+        return res.status(404).json({ message: "user not found" });
+    }
+    res.status(200).json({message : "Getting User Details", data :users , success :true});
+ }catch (error) {
+    res.status(500).json({ success: false, message: 'Server Error', error: error.message });
+}
+}
