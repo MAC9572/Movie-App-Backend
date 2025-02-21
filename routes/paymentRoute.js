@@ -40,20 +40,55 @@ router.post('/create-checkout-session', userAuth, async (req, res) => {
   }
 });
 
+// router.get("/session-status", async (req, res) => {
+//     try {
+//         const sessionId = req.query.session_id;
+//         const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+//         console.log("session=====", session);
+
+//         res.send({
+//             status: session?.status,
+//             customer_email: session?.customer_details?.email,
+//             session_data: session,
+//         });
+//     } catch (error) {
+//         res.status(error?.statusCode || 500).json(error.message || "internal server error");
+//     }
+// });
+
+
 router.get("/session-status", async (req, res) => {
     try {
-        const sessionId = req.query.session_id;
-        const session = await stripe.checkout.sessions.retrieve(sessionId);
+        const customerEmail = req.query.email;
+        
+        // Check if email is provided
+        if (!customerEmail) {
+            return res.status(400).json({ error: "Email is required" });
+        }
 
-        console.log("session=====", session);
+        // Retrieve all sessions (you may want to limit the number of sessions returned)
+        const sessions = await stripe.checkout.sessions.list({
+            limit: 10, // Limit sessions (you can adjust or remove this based on your needs)
+        });
 
+        // Find the session for the given email
+        const session = sessions.data.find(session => session.customer_details?.email === customerEmail);
+
+        if (!session) {
+            return res.status(404).json({ error: "Session not found for this email" });
+        }
+
+        // Send back the session details
         res.send({
-            status: session?.status,
-            customer_email: session?.customer_details?.email,
+            status: session.status,
+            customer_email: session.customer_details.email,
             session_data: session,
         });
+
     } catch (error) {
-        res.status(error?.statusCode || 500).json(error.message || "internal server error");
+        console.error(error);
+        res.status(error?.statusCode || 500).json({ error: error.message || "Internal server error" });
     }
 });
 

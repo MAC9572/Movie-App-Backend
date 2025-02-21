@@ -7,7 +7,7 @@ const movieSchema = new mongoose.Schema(
             type: String,
             required: true,
             minLength: 3,
-            maxLength: 30,
+            maxLength: 50,
             unique: true,
         },
         description: {
