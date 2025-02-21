@@ -34,7 +34,7 @@ export const addMovies = async (req, res, next)=>{
          const {title, description, movie_grade, languages, duration, genre, cast, crew,  theatre_admin } = req.body
          let cloudinaryRes
 
-         if(!title || !description|| !movie_grade|| !languages|| !duration|| !genre|| !cast|| !crew){
+         if(!title || !description|| !movie_grade|| !languages|| !duration|| !genre){
           return res.status(400).json({message: "All fields are required"})
          }
          console.log('movie_image' , req.file);
