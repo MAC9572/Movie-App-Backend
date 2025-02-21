@@ -32,12 +32,16 @@ export const addMovies = async (req, res, next)=>{
 
     try{
          const {title, description, movie_grade, languages, duration, genre, cast, crew,  theatre_admin } = req.body
-         if(!title || !description|| !movie_grade|| !languages|| !duration|| !genre|| !cast|| !crew){
-           res.status(400).json({message: "All fields are required"})
-         }
-         console.log('image' , req.file);
+         let cloudinaryRes
 
-         const cloudinaryRes = await cloudinaryInstance.uploader.upload(req.file.path)
+         if(!title || !description|| !movie_grade|| !languages|| !duration|| !genre){
+          return res.status(400).json({message: "All fields are required"})
+         }
+         console.log('movie_image' , req.file);
+        
+         if(req.file){
+         cloudinaryRes = await cloudinaryInstance.uploader.upload(req.file.path)
+         }
          console.log("cldRes====", cloudinaryRes);
 
           const adminId = req.user.id
@@ -45,7 +49,7 @@ export const addMovies = async (req, res, next)=>{
             title, description, movie_grade, languages, duration, genre, cast, crew, movie_image : cloudinaryRes.url, theatre_admin :adminId
          })
          await movieData.save()
-         res.json({ data: movieData, message: "Movie added successfully" });
+         return res.status(200).json({ data: movieData, message: "Movie added successfully" });
     }
     catch(error){
         return res.status(error.status || 500).json({
@@ -90,3 +94,4 @@ export const deleteMovie = async (req, res, next) => {
         return res.status(error.status || 500).json({message:error.message || "Internal Server Error"})
     }
 };
+

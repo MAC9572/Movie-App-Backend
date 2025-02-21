@@ -13,7 +13,7 @@ const scheduleSchema = new mongoose.Schema({
 }, );
 
 
-export const Schedule= mongoose.model('schedule', scheduleSchema);
+export const Schedule= mongoose.model('Schedule', scheduleSchema);
 
 
 
