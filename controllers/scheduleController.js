@@ -28,7 +28,7 @@ export const getScheduleAll = async (req, res) => {
 
 export const addSchedule = async (req, res) => {
     try {
-        const { movieId, screenId, showTime, showDate, seatsAvailable } = req.body;
+        const { movieId, screenId, showTime, showDate, seatsAvailable,cancellationAvailable } = req.body;
     
         const movieData = new Schedule({
           movieId,
@@ -36,6 +36,7 @@ export const addSchedule = async (req, res) => {
           showDate,
           showTime,
           seatsAvailable,
+          cancellationAvailable
         });
     
         await movieData.save();
@@ -44,4 +45,20 @@ export const addSchedule = async (req, res) => {
         console.error(error);
         res.status(500).json({ message: 'Error creating movie schedule', error });
       }
+};
+
+
+export const updateSchedule = async (req, res, next) => {
+    const{_id} =req.body
+    console.log(_id)
+    const updatedData = req.body;
+    try {
+        const updatedSchedule = await Schedule.findByIdAndUpdate(_id, updatedData,{new : true});
+        if(!updatedSchedule){
+            return res.status(404).json({ message: "Schedule not found" });
+        }
+        return res.json({ data: updatedSchedule, message: "Schedule updated successfully" });
+    } catch (error) {
+        return res.status(error.status || 500).json({message:error.message || "Internal Server Error"})
+    }
 };

@@ -3,6 +3,7 @@ const router = express.Router()
 import Stripe from "stripe";
 import { userAuth } from "../middlewares/userAuth.js";
 import { Order } from "../models/orderModel.js";
+import { adminAuth } from "../middlewares/adminAuth.js";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const client_domain = process.env.CLIENT_DOMAIN;
 
@@ -93,5 +94,45 @@ router.get("/session-status", async (req, res) => {
 });
 
 
+
+router.get('/session-status-all', adminAuth, async (req, res, next) => {
+  try {
+      // Retrieve all sessions (you can adjust the limit as needed)
+      const sessions = await stripe.checkout.sessions.list({
+          limit: 25, // Adjust the number of sessions you want to retrieve
+      });
+
+      // If no sessions found
+      if (sessions.data.length === 0) {
+          return res.status(404).json({ message: "No sessions found" });
+      }
+
+      // Prepare session data
+      const sessionDetails = sessions.data.map(session => ({
+          status: session.status,
+          customer_email: session.customer_details?.email,
+          customer_name : session.customer_details?.name,
+          total_amount : session?.amount_total/100,
+          payment_mode : session?.payment_method_types,
+          payment_status :session?.payment_status,
+          session_id: session.id,
+          created_at: new Date(session.created * 1000), // Converting timestamp to readable date
+      }));
+
+      // Send the session details as response
+      res.status(200).json({
+          message: "Successfully retrieved all session details",
+          data: sessionDetails,
+          success: true,
+      });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({
+          success: false,
+          message: 'Server Error',
+          error: error.message || 'Internal server error',
+      });
+  }
+});
 
 export {router as paymentRouter}
