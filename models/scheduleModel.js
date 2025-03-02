@@ -8,7 +8,7 @@ const scheduleSchema = new mongoose.Schema({
                showDate: { type: String, required: true },
             //    price: { type: Number, required: true },
                seatsAvailable: { type: Boolean, required: true },
-            //    cancellationAvailable: { type: Boolean, required: true },
+            cancellationAvailable: { type: Boolean, required: true },
 
 }, );
 
