@@ -70,7 +70,7 @@ export const updateMovie = async (req, res, next) => {
         imageUrl = cloudinaryRes.secure_url
         }
 
-        const updatedMovie = await Movie.findByIdAndUpdate(id, {updatedData, movie_image: imageUrl}, {new : true});
+        const updatedMovie = await Movie.findByIdAndUpdate(id, {...updatedData, movie_image: imageUrl}, {new : true});
         if(!updatedMovie){
             return res.status(404).json({ message: "Movie not found" });
         }
