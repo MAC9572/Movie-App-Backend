@@ -61,12 +61,8 @@ router.post('/create-checkout-session', userAuth, async (req, res) => {
 
 router.get("/session-status", async (req, res) => {
     try {
-        const customerEmail = req.query.email;
         
         // Check if email is provided
-        if (!customerEmail) {
-            return res.status(400).json({ error: "Email is required" });
-        }
 
         // Retrieve all sessions (you may want to limit the number of sessions returned)
         const sessions = await stripe.checkout.sessions.list({
@@ -74,7 +70,7 @@ router.get("/session-status", async (req, res) => {
         });
 
         // Find the session for the given email
-        const session = sessions.data.find(session => session.customer_details?.email === customerEmail);
+        const session = sessions.data.find(session => session.customer_details);
 
         if (!session) {
             return res.status(404).json({ error: "Session not found for this email" });
@@ -134,5 +130,6 @@ router.get('/session-status-all', adminAuth, async (req, res, next) => {
       });
   }
 });
+
 
 export {router as paymentRouter}
