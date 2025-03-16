@@ -95,7 +95,7 @@ router.get('/session-status-all', adminAuth, async (req, res, next) => {
   try {
       // Retrieve all sessions (you can adjust the limit as needed)
       const sessions = await stripe.checkout.sessions.list({
-          limit: 25, // Adjust the number of sessions you want to retrieve
+          limit: 10, // Adjust the number of sessions you want to retrieve
       });
 
       // If no sessions found
