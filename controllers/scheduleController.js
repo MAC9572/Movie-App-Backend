@@ -29,14 +29,15 @@ export const getScheduleAll = async (req, res) => {
 export const addSchedule = async (req, res) => {
     try {
         const { movieId, screenId, showTime, showDate, seatsAvailable,cancellationAvailable } = req.body;
-    
+        const adminId = req.user.id
         const movieData = new Schedule({
           movieId,
           screenId,
           showDate,
           showTime,
           seatsAvailable,
-          cancellationAvailable
+          cancellationAvailable,
+          theatre_admin:adminId
         });
     
         await movieData.save();
@@ -60,5 +61,28 @@ export const updateSchedule = async (req, res, next) => {
         return res.json({ data: updatedSchedule, message: "Schedule updated successfully" });
     } catch (error) {
         return res.status(error.status || 500).json({message:error.message || "Internal Server Error"})
+    }
+};
+
+
+export const getScheduleByAdmin = async (req, res) => {
+    try {
+        const adminId = req.user.id;
+        const schedules = await Schedule.find({theatre_admin:adminId}).populate('movieId', "title languages").populate('screenId', "-seats");
+        res.status(200).json({ data: schedules, message: "Fetching Schedule Details" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching schedules' });
+    }
+};
+
+export const getScheduleById = async (req, res) => {
+    try {
+        const{screenId} =req.params
+        console.log(screenId)
+        const schedules = await Schedule.find({screenId}).populate('movieId', "title languages").populate('screenId', "-seats");
+        res.status(200).json({ data: schedules, message: "Fetching Schedule Details" });
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error", error: error.message });
     }
 };

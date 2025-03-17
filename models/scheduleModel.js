@@ -9,8 +9,9 @@ const scheduleSchema = new mongoose.Schema({
             //    price: { type: Number, required: true },
                seatsAvailable: { type: Boolean, required: true },
             cancellationAvailable: { type: Boolean, required: true },
+             theatre_admin: { type: mongoose.Schema.Types.ObjectId, ref: "Admin", required: true }
+            }, { timestamps: true });
 
-}, );
 
 
 export const Schedule= mongoose.model('Schedule', scheduleSchema);
